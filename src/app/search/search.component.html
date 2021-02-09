@@ -1,0 +1,12 @@
+<h1>Search For Cool Giphy</h1>
+<div class="search">
+  <input [(ngModel)]="query" type="text" placeholder="Search all the GIFs"
+    (keypress)="keyPressAlphaNumeric($event)">
+  <button mat-raised-button color="primary" (click)="performSearch(query)">Search</button>
+</div>
+
+<div class="gifs" (scroll)="onScroll()">
+  <div class="gif" *ngFor="let item of foundGifs">
+    <img src="{{item.images.downsized.url}}" alt="" (click)="openDialog(item.images.downsized.url)">
+  </div>
+</div>
