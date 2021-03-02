@@ -14,14 +14,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchComponent } from './search/search.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PreviewGiphyComponent } from './preview-giphy/preview-giphy.component';
-import { GiphyDataComponent } from './giphy-data/giphy-data.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchComponent,
-    PreviewGiphyComponent,
-    GiphyDataComponent
+    PreviewGiphyComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +33,7 @@ import { GiphyDataComponent } from './giphy-data/giphy-data.component';
     MatGridListModule,
     ScrollingModule
   ],
+  entryComponents: [SearchComponent],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
   ],

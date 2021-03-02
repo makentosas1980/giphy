@@ -7,6 +7,6 @@
 
 <div class="gifs" (scroll)="onScroll()">
   <div class="gif" *ngFor="let item of foundGifs">
-    <img src="{{item.images.downsized.url}}" alt="" (click)="openDialog(item.images.downsized.url)">
+    <img src="{{ item.imageUrl }}" alt="" (click)="openDialog(item.imageUrl)">
   </div>
 </div>

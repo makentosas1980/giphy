@@ -1,8 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { DataService } from '../services/data.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Giphy, IGiphy } from '../interfaces/giphy';
 import { PreviewGiphyComponent } from '../preview-giphy/preview-giphy.component';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-search',
@@ -11,35 +11,30 @@ import { PreviewGiphyComponent } from '../preview-giphy/preview-giphy.component'
 })
 
 export class SearchComponent implements OnInit {
-  url: string = "";
-  foundGifs: any[] = [];
-  perPage: number = 12;
-  offset: number = 12;
-  result: any;
+
   endReached = false;
-  subscription: Subscription = new Subscription;
+  foundGifs: IGiphy[] = [];
+  offset: number = 12;
+  perPage: number = 12;
   query: string = '';
+  url: string = "";
 
   constructor(
     private dataService: DataService,
     public dialog: MatDialog
   ) { }
 
-  openDialog(url: string): void {
+  openDialog(imageUrl: string): void {
     const dialogRef = this.dialog.open(PreviewGiphyComponent, {
-      width: '500px',
-      data: {url: url}
+      width: '600px',
+      data: {imageUrl: imageUrl}
     });
   }
 
   ngOnInit(): void {
     this.dataService.trendingGifs().subscribe((res: any) => {
-      this.foundGifs = res.data;
-    })
-  }
-
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
+      this.addGifsToArray(res.data);
+    });
   }
 
   performSearch(searchTerm: string): void {
@@ -47,17 +42,19 @@ export class SearchComponent implements OnInit {
     this.search();
   }
 
-  loadMore() {
-    this.offset = this.offset + this.perPage;
-    this.search();
-  }
-
   search() {
     this.dataService.searchGifs(this.query, this.perPage, this.offset)
     .subscribe((res: any) => {
-      this.result = res.data;
-      this.foundGifs = this.foundGifs.concat(this.result);
+      this.addGifsToArray(res.data);
     });
+  }
+
+  addGifsToArray(response: any) {
+    for (const gif of response) {
+      const giphyUrl = gif.images.downsized.url;
+      const giphy = new Giphy(giphyUrl);
+      this.foundGifs.push(giphy);
+    }
   }
 
   @HostListener("window:scroll", ["$event"])
@@ -70,6 +67,11 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  loadMore() {
+    this.offset = this.offset + this.perPage;
+    this.search();
+  }
+
   keyPressAlphaNumeric(event: any) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp)) {
@@ -79,6 +81,5 @@ export class SearchComponent implements OnInit {
       return false;
     }
   }
-
 
 }

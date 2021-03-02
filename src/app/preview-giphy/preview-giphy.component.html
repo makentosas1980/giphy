@@ -1,1 +1,10 @@
-<app-giphy-data></app-giphy-data>
+<div class="container">
+  <div>
+    <mat-dialog-content>
+      <img src="{{ data.imageUrl }}" alt="">
+    </mat-dialog-content>
+  </div>
+  <div class="close-button">
+    <button mat-raised-button color="primary" mat-dialog-close>Close</button>
+  </div>
+</div>

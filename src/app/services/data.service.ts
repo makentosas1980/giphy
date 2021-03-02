@@ -5,7 +5,8 @@ import { HttpClient } from "@angular/common/http";
   providedIn: 'root'
 })
 export class DataService {
-  giphyApi = 'QErAjE97Rvrk0EWi1WS7PotQQBQi5svH';
+  //you need your own giphy API here
+  giphyApi = '';
 
   constructor(private http: HttpClient) { }
 
